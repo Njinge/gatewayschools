@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: gateway-schools
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn school_portal.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gateway-schools-db
+          property: connectionString
+    database:
+      name: gateway-schools-db
+      databaseName: gateway_schools
+      user: gateway_schools_user 
